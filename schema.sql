@@ -23,31 +23,31 @@ INSERT INTO products(product_name, department_name, price, stock_quantity)
 VALUES("Batteries", "Electronics", 3, 2000);
 
 INSERT INTO products(product_name, department_name, price, stock_quantity)
-VALUES(Iphone Cable, Electronics, 10, 4000);
+VALUES("Iphone Cable", "Electronics", 10, 4000);
 
 INSERT INTO products(product_name, department_name, price, stock_quantity)
-VALUES(RayBan Wayfarer Sunglasses, Apparell, 130, 30);
+VALUES("RayBan Wayfarer Sunglasses", "Apparrell", 130, 30);
 
 INSERT INTO products(product_name, department_name, price, stock_quantity)
-VALUES(Vizio HDTV, Electronics, 450, 130);
+VALUES("Vizio HDTV", "Electronics", 450, 130);
 
 INSERT INTO products(product_name, department_name, price, stock_quantity)
-VALUES(Sony HDTV, Electronics, 550, 130);
+VALUES("Sony HDTV", "Electronics", 550, 130);
 
 INSERT INTO products(product_name, department_name, price, stock_quantity)
-VALUES(Ralph Lauren Polo, Apparell, 65, 50);
+VALUES("Ralph Lauren Polo", "Apparell", 65, 50);
 
 INSERT INTO products(product_name, department_name, price, stock_quantity)
-VALUES(Yankees Hat, Apparell, 18, 30);
+VALUES("Yankees Hat", "Apparell", 18, 30);
 
 INSERT INTO products(product_name, department_name, price, stock_quantity)
-VALUES(WebCam, Electronics, 35, 180);
+VALUES("Webcam", "Electronics", 35, 180);
 
 INSERT INTO products(product_name, department_name, price, stock_quantity)
-VALUES(Micro Usb Cable, Electronics, 6, 2000);
+VALUES("Micro Usb Cable", "Electronics", 6, 2000);
 
 INSERT INTO products(product_name, department_name, price, stock_quantity)
-VALUES(Nike AirMax Mens Shoes, Apparell, 120, 60);
+VALUES("Nike AirMax Men's Shoes", "Apparell", 120, 60);
 
 
 

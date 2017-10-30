@@ -19,13 +19,12 @@ var connection = mySql.createConnection({
 connection.connect(function(err, res) {
     if (err) throw err;
     showProducts();
-    selection();
 });
 
 function showProducts () {
     connection.query('SELECT * FROM products', function(err, res) {
         for (var i = 0; i < res.length; i++) {
-            console.log( '\n' + "** " +
+            console.log( "** " +
                 "Product_Id: " +
                 res[i].item_id + '\n' + "** " +
                 "Product_name: " +
@@ -37,6 +36,7 @@ function showProducts () {
             );
         if (err) throw err;
         }
+        selection();
     })
 }
 
@@ -46,33 +46,28 @@ function selection () {
             {
                 name: "pick1",
                 type: "input",
-                message: "What is the product ID of the Item you would like to purchase?",
-                validate: function (value) {
-                    if (null === false) {
-                        return true;
-                    }
-                    return false;
-                }
-            },
-            {
-                name: "pick2",
-                type: "input",
-                message: "How much of this item would you like to purchase?",
-                validate: function (value) {
-                    if (isNaN(value) === false) {
-                        return true;
-                    }
-                    return false;
-                }
+                message: "What is the product ID of the Item you would like to purchase?"
             }
         ])
-        .then(function (res) {
-            if (value > res.quantity_total) {
-                console.log('Insufficient quantity!');
-            } else {
-                console.log('Coming right up! ');
+        .then(function (answer) {
+            if (answer.pick1 !== null) {
+                inquierer.prompt([
+                    {
+                        name: "pick2",
+                        message: "How much of this product would you like?",
+                        type: "input"
+                    }
+                ])
+                    .then(function (answer) {
+                        if (answer.pick2 < answer.stock_quantity) {
+                            console.log("Coming right up!");
+                        }
+                        else {
+                            console.log("Insufficient Quantity");
+                        }
+                    });
+                connection.end();
             }
-            connection.end();
         })
 }
 
