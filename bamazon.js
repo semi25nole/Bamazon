@@ -15,6 +15,8 @@ var connection = mySql.createConnection({
     database: "bamazondb"
 });
 
+var Order = {};
+
 // Check the connection with a simple throw error to congratulatory console.log
 function makeConnection() {
     connection.connect(function(err, res) {
@@ -71,35 +73,40 @@ function selection() {
             }
         }
     ]).then(function(order) {
+        //console.log(order);
+        Order = order;
         var query = connection.query('SELECT * FROM products WHERE ?',
     [
         {
-            item_id: selection.item_id
+            item_id: order.item_id
         }
     ],
     function(err, res){
             if(err) throw err;
             var stockQuantity = res[0].stock_quantity;
-            var orderQuantity = selection.stock_quantity;
-            if(parseInt(selection.stock_quantity) <= parseInt(res[0].stock_quantity)) {
+            var orderQuantity = Order.stock_quantity;
+            //console.log(res[0].stock_quantity);
+            //console.log(Order);
+            if(parseInt(orderQuantity) <= parseInt(stockQuantity)) {
                 console.log("Congrats!! We have plenty of this item");
-                console.log("Here is your " + selection.stock_quantity + " " + res[0].product_name);
+                console.log("Here are your " + order.stock_quantity + " " + res[0].product_name);
                 connection.query('UPDATE products SET ? WHERE ?', 
             [
                 {
                     stock_quantity: stockQuantity - orderQuantity
                 },
                 {
-                    item_id: selection.item_id
+                    item_id: order.item_id
                 }
             ],
             function(err, res) {
                     if(err) throw err;
-                    reOrder();
+                    connection.end();
+                    
                 });
             } else {
                 console.log("I'm sorry there are insufficient funds to fulfill your order");
-                reOrder();
+                connection.end();
             }
         });
     });

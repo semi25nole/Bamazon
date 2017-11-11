@@ -13,7 +13,8 @@ CREATE TABLE products(
     product_name VARCHAR(255),
     department_name VARCHAR(255),
     price INTEGER(255) NOT NULL,
-    stock_quantity INTEGER(255) NOT NULL
+    stock_quantity INTEGER(255) NOT NULL,
+    PRIMARY KEY(item_id)
     );
 
 -- add 10 different products into the table
