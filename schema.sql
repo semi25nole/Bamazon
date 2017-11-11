@@ -9,12 +9,12 @@ USE bamazonDB;
 
 -- Create a table named products
 CREATE TABLE products(
-    item_id INTEGER AUTO_INCREMENT NOT NULL,
+    item_id INTEGER(15) AUTO_INCREMENT NOT NULL,
     product_name VARCHAR(255),
     department_name VARCHAR(255),
-    price INTEGER NULL,
-    stock_quantity INTEGER NOT NULL
-);
+    price INTEGER(255) NOT NULL,
+    stock_quantity INTEGER(255) NOT NULL
+    );
 
 -- add 10 different products into the table
 

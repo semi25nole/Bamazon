@@ -5,7 +5,7 @@ var inquirer = require("inquirer");
 // Create a connection to mySql
 var connection = mySql.createConnection({
     host: "localhost",
-    port: 3306,
+    port: 3030,
 
     // Your username
     user: "root",
@@ -16,10 +16,16 @@ var connection = mySql.createConnection({
 });
 
 // Check the connection with a simple throw error to congratulatory console.log
-connection.connect(function(err, res) {
-    if (err) throw err;
-    showProducts();
-});
+function makeConnection() {
+    connection.connect(function(err, res) {
+        if (err) throw err;
+        showProducts();
+    });
+}
+
+function reOrder(){
+    order();
+}
 
 function showProducts () {
     connection.query('SELECT * FROM products', function(err, res) {
@@ -40,38 +46,63 @@ function showProducts () {
     })
 }
 
-function selection () {
-    inquirer
-        .prompt([
-            {
-                name: "pick1",
-                type: "input",
-                message: "What is the product ID of the Item you would like to purchase?"
+function selection() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'item_id',
+            message: 'Please Select which item you would like to purchase: ',
+            validate: function(value) {
+                if(isNaN(value) === false) {
+                    return true;
+                }
+                return false;
             }
-        ])
-        .then(function (answer) {
-            if (answer.pick1 !== null) {
-                inquierer.prompt([
-                    {
-                        name: "pick2",
-                        message: "How much of this product would you like?",
-                        type: "input"
-                    }
-                ])
-                    .then(function (answer) {
-                        if (answer.pick2 < answer.stock_quantity) {
-                            console.log("Coming right up!");
-                        }
-                        else {
-                            console.log("Insufficient Quantity");
-                        }
-                    });
-                connection.end();
+        },
+        {
+            type: 'input',
+            name: 'stock_quantity',
+            message: 'How much of this product would you like?: ',
+            validate: function(value){
+                if(isNaN(value) === false) {
+                    return true;
+                }
+                return false;
             }
-        })
+        }
+    ]).then(function(order) {
+        var query = connection.query('SELECT * FROM products WHERE ?',
+    [
+        {
+            item_id: selection.item_id
+        }
+    ],
+    function(err, res){
+            if(err) throw err;
+            var stockQuantity = res[0].stock_quantity;
+            var orderQuantity = selection.stock_quantity;
+            if(parseInt(selection.stock_quantity) <= parseInt(res[0].stock_quantity)) {
+                console.log("Congrats!! We have plenty of this item");
+                console.log("Here is your " + selection.stock_quantity + " " + res[0].product_name);
+                connection.query('UPDATE products SET ? WHERE ?', 
+            [
+                {
+                    stock_quantity: stockQuantity - orderQuantity
+                },
+                {
+                    item_id: selection.item_id
+                }
+            ],
+            function(err, res) {
+                    if(err) throw err;
+                    reOrder();
+                });
+            } else {
+                console.log("I'm sorry there are insufficient funds to fulfill your order");
+                reOrder();
+            }
+        });
+    });
 }
 
-
-
-
-
+makeConnection();
