@@ -27,7 +27,7 @@ function makeConnection() {
 
 function reOrder(){
     order();
-}
+}                                             
 
 function showProducts () {
     connection.query('SELECT * FROM products', function(err, res) {
