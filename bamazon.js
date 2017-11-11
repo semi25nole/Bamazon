@@ -106,7 +106,7 @@ function selection() {
                 });
             } else {
                 console.log("I'm sorry there are insufficient funds to fulfill your order");
-                connection.end();
+                selection();
             }
         });
     });
